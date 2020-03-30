@@ -17,6 +17,13 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
 
 - Use VS code to open current directory
   - Replace line 16 of `deployment.template.json` and `deployment.debug.template.json` from `"address": "docker"` to `"address": "{your-container-registry-address}"`
+  - Create new file `IoTEdgeSolution/.env`. Copy below content to env file
+
+  ```bash
+  CONTAINER_REGISTRY_USERNAME={your-container-registry-username}
+  CONTAINER_REGISTRY_PASSWORD={your-container-registry-password}
+  ```
+
   - To link Azure account and Azure IoT Hub to VS code, follow steps in the section "[Set up VS Code and tools](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux#set-up-vs-code-and-tools)"
   - To build and push IoT modules, follow steps in the section "[Build and push your module](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#build-and-push-your-module)"
   - To deploy IoT modules to edge devices, follow steps in the section "[Deploy modules to device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#deploy-modules-to-device)"
