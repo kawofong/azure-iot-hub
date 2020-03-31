@@ -1,8 +1,14 @@
 {
     "name": "machinetemperaturefilter",
     "version": "0.0.1",
+    "devDependencies": {
+        "mocha": "^6.1.4"
+    },
     "dependencies": {
-        "azure-iot-device": "^1.7.0",
-        "azure-iot-device-mqtt": "^1.7.0"
+        "azure-iot-device": "^1.9.9",
+        "azure-iot-device-mqtt": "^1.9.9"
+    },
+    "scripts": {
+        "test": "mocha"
     }
 }

@@ -33,11 +33,19 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
 
 - [] document steps to reproduce environment
 - [] Automate IoT module build and deployment in script
+- [] automated testing
+- [] implement ci pipeline
+- [] document local dev flow
+- [] implement cd pipeline
+- [] implement environment promotion
+
+## Gotchas
+
+- GitHub Action currently does not support Azure IoT Edge plugins
 
 ## References
 
 - [Tutorial: Develop IoT Edge modules for Linux devices](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux)
-
 - [Tutorial: Develop and deploy a Node.js IoT Edge module for Linux devices](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module)
 
 ---
