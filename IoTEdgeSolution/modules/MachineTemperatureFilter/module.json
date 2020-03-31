@@ -2,9 +2,9 @@
     "$schema-version": "0.0.1",
     "description": "",
     "image": {
-        "repository": "adhoc23acr.azurecr.io/machinetemperaturefilter",
+        "repository": "${CONTAINER_REGISTRY_ADDRESS}/machinetemperaturefilter",
         "tag": {
-            "version": "0.0.1",
+            "version": "${BUILD_VERSION}",
             "platforms": {
                 "amd64": "./Dockerfile.amd64",
                 "amd64.debug": "./Dockerfile.amd64.debug",

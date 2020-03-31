@@ -22,6 +22,8 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
   ```bash
   CONTAINER_REGISTRY_USERNAME={your-container-registry-username}
   CONTAINER_REGISTRY_PASSWORD={your-container-registry-password}
+  CONTAINER_REGISTRY_ADDRESS={your-container-registry-address}
+  BUILD_VERSION=0.0.1
   ```
 
   - To link Azure account and Azure IoT Hub to VS code, follow steps in the section "[Set up VS Code and tools](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux#set-up-vs-code-and-tools)"
