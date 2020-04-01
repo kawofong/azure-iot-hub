@@ -100,6 +100,10 @@ stages:
               action: 'Generate deployment manifest'
               templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
               deploymentManifestOutputPath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: 'env && cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
           - task: AzureIoTEdge@2
             displayName: 'Azure IoT Edge - Deploy to IoT Edge devices'
             inputs:
