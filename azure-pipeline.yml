@@ -3,7 +3,7 @@ trigger:
 
 variables:
   nodeVersion: '12.x'
-  workingDir: 'IoTEdgeSolution/modules/MachineTemeratureFilter'
+  workingDir: 'IoTEdgeSolution/modules/MachineTemperatureFilter'
   azureSubscription: 'AzureSubscriptionServiceConnection'
   azureContainerRegistryName: 'adhoc23acr' # TODO: replace with '{your-acr-name}'
   azureIotHubName: 'adhoc23-iothub' # TODO: replace with '{your-iothub-name}'
