@@ -64,6 +64,11 @@ stages:
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_USERNAME]${CONTAINER_REGISTRY_USERNAME}" && \
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_PASSWORD]${CONTAINER_REGISTRY_PASSWORD}" && \
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ADDRESS]${CONTAINER_REGISTRY_ADDRESS}"
+          - task: Bash@3
+            displayName: 'Display environment variables'
+            inputs:
+              targetType: 'inline'
+              script: env
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Build module images'
             inputs:

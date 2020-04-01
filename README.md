@@ -12,7 +12,7 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
 
 ## Getting Started
 
-- Clone this repo
+- Fork this repo and clone your forked repo locally
 
 - Run `AZ_SUBSCRIPTION_ID={Your-Azure-subscription-id} AZ_BASE_NAME={Unique-base-name} ./build_environment.sh` to build Azure environments
   - This will provision an [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/), [Azure Linux VM with IoT Edge runtime](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge-ubuntuvm), and [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
@@ -25,7 +25,7 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
   CONTAINER_REGISTRY_USERNAME={your-container-registry-username}
   CONTAINER_REGISTRY_PASSWORD={your-container-registry-password}
   CONTAINER_REGISTRY_ADDRESS={your-container-registry-address}
-  BUILD_VERSION=0.0.1
+  BUILD_BUILDID=1
   ```
 
   - To link Azure account and Azure IoT Hub to VS code, follow steps in the section "[Set up VS Code and tools](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux#set-up-vs-code-and-tools)"
@@ -33,8 +33,9 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
   - To deploy IoT modules to edge devices, follow steps in the section "[Deploy modules to device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#deploy-modules-to-device)"
   - To edit module twin, follow steps in the section "[Edit the module twin](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#edit-the-module-twin)"
 
-- TODO: create Azure Pipeline using `./azure-pipeline.yml`
-  - TODO: create service connection `AzureSubscriptionServiceConnection` and link it to Azure subscription
+- Create new Azure DevOps service project
+  - Create new "Azure Resource Manager" service connection named `AzureSubscriptionServiceConnection` and link it to your Azure subscription
+  - Create new Azure Pipeline using your forked repo and YAML file `./azure-pipeline.yml`
 
 ## Next steps
 
