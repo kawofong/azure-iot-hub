@@ -5,6 +5,7 @@ variables:
   nodeVersion: '12.x'
   workingDir: 'IoTEdgeSolution/modules/MachineTemperatureFilter'
   azureSubscription: 'AzureSubscriptionServiceConnection'
+  # baseName: 'adhoc23' # TODO: replace with '{your-base-name}'
   azureContainerRegistryName: 'adhoc23acr' # TODO: replace with '{your-acr-name}'
   azureIotHubName: 'adhoc23-iothub' # TODO: replace with '{your-iothub-name}'
 
@@ -46,6 +47,19 @@ stages:
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
+          # - task: AzureCLI@2
+          #   displayName: 'Azure CLI: Retrieve environment variables'
+          #   inputs:
+          #     azureSubscription: '$(azureSubscription)'
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     inlineScript: |
+          #       AZURE_SUBSCRIPTION_ID=$(az account show | jq -r '.id') && \
+          #       AZURE_RG_NAME=$(az account show | jq -r '.id') && \
+          #       ACR_NAME=$(az account show | jq -r '.id') && \
+          #       echo "##vso[task.setvariable variable=AZURE_SUBSCRIPTION_ID]${AZURE_SUBSCRIPTION_ID}" && \
+          #       echo "##vso[task.setvariable variable=AZURE_RG_NAME]${AZURE_RG_NAME}" && \
+          #       echo "##vso[task.setvariable variable=ACR_NAME]${ACR_NAME}"
           - task: AzureCLI@2
             displayName: 'Azure CLI: Get ACR credentials'
             inputs:
@@ -59,34 +73,37 @@ stages:
                     CONTAINER_REGISTRY_PASSWORD=$(az acr credential show -n $(azureContainerRegistryName) --query passwords[0].value) && \
                     CONTAINER_REGISTRY_PASSWORD=${CONTAINER_REGISTRY_PASSWORD//\"/} && \
                     CONTAINER_REGISTRY_ADDRESS=$(az acr show -n $(azureContainerRegistryName) --query loginServer) && \
-                    CONTAINER_REGISTRY_ADDRESS=${CONTAINER_REGISTRY_ADDRESS//\"/}
+                    CONTAINER_REGISTRY_ADDRESS=${CONTAINER_REGISTRY_ADDRESS//\"/} && \
+                    CONTAINER_REGISTRY_ID=$(az acr show -n $(azureContainerRegistryName) --query id) && \
+                    CONTAINER_REGISTRY_ID=${CONTAINER_REGISTRY_ID//\"/}
                 fi && \
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_USERNAME]${CONTAINER_REGISTRY_USERNAME}" && \
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_PASSWORD]${CONTAINER_REGISTRY_PASSWORD}" && \
-                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ADDRESS]${CONTAINER_REGISTRY_ADDRESS}"
-          - task: Bash@3
-            displayName: 'Display environment variables'
-            inputs:
-              targetType: 'inline'
-              script: 'env && cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ADDRESS]${CONTAINER_REGISTRY_ADDRESS}" && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ID]${CONTAINER_REGISTRY_ID}"
+          # - task: Bash@3
+          #   displayName: 'Display environment variables'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'env && cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Build module images'
             inputs:
               action: 'Build module images'
               templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
               defaultPlatform: amd64
-          - task: Bash@3
-            displayName: 'Cat deployment.template.json'
-            inputs:
-              targetType: 'inline'
-              script: 'cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
+          # - task: Bash@3
+          #   displayName: 'Cat deployment.template.json'
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Push module images'
             inputs:
               action: 'Push module images'
               azureSubscriptionEndpoint: '$(azureSubscription)'
               containerregistrytype: 'Azure Container Registry'
-              azureContainerRegistry: '$(azureContainerRegistryName)'
+              azureContainerRegistry: '{"loginServer":"$(CONTAINER_REGISTRY_ADDRESS)", "id" : "$(CONTAINER_REGISTRY_ID)"}'
               templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
               defaultPlatform: amd64
               fillRegistryCredential: false

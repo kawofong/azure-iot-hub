@@ -29,7 +29,7 @@ set -o pipefail
 # Environment variables (and their defaults) that this script depends on
 AZ_SUBSCRIPTION_ID="${AZ_SUBSCRIPTION_ID:-1234}"                        # Azure subscription id
 AZ_REGION="${AZ_REGION:-eastus}"                                        # Azure region
-AZ_BASE_NAME="${AZ_BASE_NAME:-GEN-UNIQUE}"                              # Base name for Azure resources
+AZ_BASE_NAME="${AZ_BASE_NAME:-GENUNIQUE}"                               # Base name for Azure resources
 
 
 ### Functions
