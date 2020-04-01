@@ -5,7 +5,6 @@ variables:
   nodeVersion: '12.x'
   workingDir: 'IoTEdgeSolution/modules/MachineTemperatureFilter'
   azureSubscription: 'AzureSubscriptionServiceConnection'
-  # baseName: 'adhoc23' # TODO: replace with '{your-base-name}'
   azureContainerRegistryName: 'adhoc23acr' # TODO: replace with '{your-acr-name}'
   azureIotHubName: 'adhoc23-iothub' # TODO: replace with '{your-iothub-name}'
 
@@ -47,19 +46,6 @@ stages:
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
-          # - task: AzureCLI@2
-          #   displayName: 'Azure CLI: Retrieve environment variables'
-          #   inputs:
-          #     azureSubscription: '$(azureSubscription)'
-          #     scriptType: bash
-          #     scriptLocation: inlineScript
-          #     inlineScript: |
-          #       AZURE_SUBSCRIPTION_ID=$(az account show | jq -r '.id') && \
-          #       AZURE_RG_NAME=$(az account show | jq -r '.id') && \
-          #       ACR_NAME=$(az account show | jq -r '.id') && \
-          #       echo "##vso[task.setvariable variable=AZURE_SUBSCRIPTION_ID]${AZURE_SUBSCRIPTION_ID}" && \
-          #       echo "##vso[task.setvariable variable=AZURE_RG_NAME]${AZURE_RG_NAME}" && \
-          #       echo "##vso[task.setvariable variable=ACR_NAME]${ACR_NAME}"
           - task: AzureCLI@2
             displayName: 'Azure CLI: Get ACR credentials'
             inputs:
@@ -81,22 +67,12 @@ stages:
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_PASSWORD]${CONTAINER_REGISTRY_PASSWORD}" && \
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ADDRESS]${CONTAINER_REGISTRY_ADDRESS}" && \
                 echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ID]${CONTAINER_REGISTRY_ID}"
-          # - task: Bash@3
-          #   displayName: 'Display environment variables'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'env && cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Build module images'
             inputs:
               action: 'Build module images'
               templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
               defaultPlatform: amd64
-          # - task: Bash@3
-          #   displayName: 'Cat deployment.template.json'
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'cat $(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Push module images'
             inputs:
@@ -107,3 +83,30 @@ stages:
               templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
               defaultPlatform: amd64
               fillRegistryCredential: false
+
+  - stage: 'Dev'
+    displayName: 'Deploy IoT module to Dev environment'
+    dependsOn: 'BuildAndPushImage'
+    condition: 'succeeded()'
+    jobs:
+      - job: 'Dev'
+        displayName: 'Deploy to Dev environment'
+        pool:
+          vmImage: 'ubuntu-16.04'
+        steps:
+          - task: AzureIoTEdge@2
+            displayName: 'Azure IoT Edge - Generate deployment manifest'
+            inputs:
+              action: 'Generate deployment manifest'
+              templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
+              deploymentManifestOutputPath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
+      - task: AzureIoTEdge@2
+        displayName: 'Azure IoT Edge - Deploy to IoT Edge devices'
+        inputs:
+          action: 'Deploy to IoT Edge devices'
+          deploymentFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
+          azureSubscription: '$(azureSubscription)'
+          iothubname: '$(azureIotHubName)'
+          deploymentid: '$(System.TeamProject)-deployment'
+          deviceOption: 'Multiple Device'
+          targetcondition: 'capabilities.iotEdge = true'
