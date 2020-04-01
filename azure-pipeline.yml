@@ -94,6 +94,27 @@ stages:
         pool:
           vmImage: 'ubuntu-16.04'
         steps:
+          - task: AzureCLI@2
+            displayName: 'Azure CLI: Get ACR credentials'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                if [ -z "${CONTAINER_REGISTRY_USERNAME}" ]; then
+                    CONTAINER_REGISTRY_USERNAME=$(az acr credential show -n $(azureContainerRegistryName) --query username) && \
+                    CONTAINER_REGISTRY_USERNAME=${CONTAINER_REGISTRY_USERNAME//\"/} && \
+                    CONTAINER_REGISTRY_PASSWORD=$(az acr credential show -n $(azureContainerRegistryName) --query passwords[0].value) && \
+                    CONTAINER_REGISTRY_PASSWORD=${CONTAINER_REGISTRY_PASSWORD//\"/} && \
+                    CONTAINER_REGISTRY_ADDRESS=$(az acr show -n $(azureContainerRegistryName) --query loginServer) && \
+                    CONTAINER_REGISTRY_ADDRESS=${CONTAINER_REGISTRY_ADDRESS//\"/} && \
+                    CONTAINER_REGISTRY_ID=$(az acr show -n $(azureContainerRegistryName) --query id) && \
+                    CONTAINER_REGISTRY_ID=${CONTAINER_REGISTRY_ID//\"/}
+                fi && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_USERNAME]${CONTAINER_REGISTRY_USERNAME}" && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_PASSWORD]${CONTAINER_REGISTRY_PASSWORD}" && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ADDRESS]${CONTAINER_REGISTRY_ADDRESS}" && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ID]${CONTAINER_REGISTRY_ID}"
           - task: AzureIoTEdge@2
             displayName: 'Azure IoT Edge - Generate deployment manifest'
             inputs:
