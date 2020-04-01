@@ -100,13 +100,13 @@ stages:
               action: 'Generate deployment manifest'
               templateFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.template.json'
               deploymentManifestOutputPath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
-      - task: AzureIoTEdge@2
-        displayName: 'Azure IoT Edge - Deploy to IoT Edge devices'
-        inputs:
-          action: 'Deploy to IoT Edge devices'
-          deploymentFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
-          azureSubscription: '$(azureSubscription)'
-          iothubname: '$(azureIotHubName)'
-          deploymentid: '$(System.TeamProject)-deployment'
-          deviceOption: 'Multiple Device'
-          targetcondition: 'capabilities.iotEdge = true'
+          - task: AzureIoTEdge@2
+            displayName: 'Azure IoT Edge - Deploy to IoT Edge devices'
+            inputs:
+              action: 'Deploy to IoT Edge devices'
+              deploymentFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
+              azureSubscription: '$(azureSubscription)'
+              iothubname: '$(azureIotHubName)'
+              deploymentid: '$(System.TeamProject)-deployment'
+              deviceOption: 'Multiple Device'
+              targetcondition: 'capabilities.iotEdge = true'
