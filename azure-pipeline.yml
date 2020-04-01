@@ -1,0 +1,37 @@
+trigger:
+- master
+
+variables:
+  nodeVersion: '12.x'
+  workingDir: 'IoTEdgeSolution/modules/MachineTemeratureFilter'
+  azureSubscription: 'AzureSubscriptionServiceConnection'
+  azureContainerRegistryName: 'adhoc23acr' # TODO: replace with '{your-acr-name}'
+  azureIotHubName: 'adhoc23-iothub' # TODO: replace with '{your-iothub-name}'
+
+stages:
+  - stage: 'Test'
+    displayName: 'Build npm and Test IoT module'
+    jobs:
+      - job: 'Test'
+        displayName: 'Build and unit tests'
+        pool:
+          vmImage: 'ubuntu-16.04'
+          demands:
+            - npm
+        steps:
+          - task: NodeTool@0
+            displayName: 'Use Node 12.x'
+            inputs:
+              versionSpec: '$(nodeVersion)'
+          - task: Npm@1
+            displayName: 'Install Dependences'
+            inputs:
+              workingDir: '$(workingDir)'
+              verbose: false
+          - task: Npm@1
+            displayName: 'Run UnitTest'
+            inputs:
+              command: custom
+              workingDir: '$(workingDir)'
+              verbose: false
+              customCommand: test

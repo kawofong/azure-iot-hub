@@ -12,6 +12,8 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
 
 ## Getting Started
 
+- Clone this repo
+
 - Run `AZ_SUBSCRIPTION_ID={Your-Azure-subscription-id} AZ_BASE_NAME={Unique-base-name} ./build_environment.sh` to build Azure environments
   - This will provision an [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/), [Azure Linux VM with IoT Edge runtime](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge-ubuntuvm), and [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
 
@@ -31,11 +33,13 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
   - To deploy IoT modules to edge devices, follow steps in the section "[Deploy modules to device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#deploy-modules-to-device)"
   - To edit module twin, follow steps in the section "[Edit the module twin](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#edit-the-module-twin)"
 
+- TODO: create Azure Pipeline using `./azure-pipeline.yml`
+  - TODO: create service connection `AzureSubscriptionServiceConnection` and link it to Azure subscription
+
 ## Next steps
 
 - [] document steps to reproduce environment
 - [] Automate IoT module build and deployment in script
-- [] automated testing
 - [] implement ci pipeline
 - [] document local dev flow
 - [] implement cd pipeline
