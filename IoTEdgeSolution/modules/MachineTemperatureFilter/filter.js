@@ -24,6 +24,7 @@ module.exports = class Filter {
     });
 
     filteredMessage.properties.add('MessageType', 'Alert');
+    // filteredMessage.properties.add('Status', 'Overheat');
     return filteredMessage;
   }
 

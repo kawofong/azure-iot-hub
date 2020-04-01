@@ -53,17 +53,17 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
-                if [ -z "${ACR_USER}" ]; then
-                    ACR_USER=$(az acr credential show -n $(azureContainerRegistryName) --query username) && \
-                    ACR_USER=${ACR_USER//\"/} && \
-                    ACR_PASSWORD=$(az acr credential show -n $(azureContainerRegistryName) --query passwords[0].value) && \
-                    ACR_PASSWORD=${ACR_PASSWORD//\"/} && \
-                    ACR_ADDRESS=$(az acr show -n $(azureContainerRegistryName) --query loginServer) && \
-                    ACR_ADDRESS=${ACR_ADDRESS//\"/}
+                if [ -z "${CONTAINER_REGISTRY_USERNAME}" ]; then
+                    CONTAINER_REGISTRY_USERNAME=$(az acr credential show -n $(azureContainerRegistryName) --query username) && \
+                    CONTAINER_REGISTRY_USERNAME=${CONTAINER_REGISTRY_USERNAME//\"/} && \
+                    CONTAINER_REGISTRY_PASSWORD=$(az acr credential show -n $(azureContainerRegistryName) --query passwords[0].value) && \
+                    CONTAINER_REGISTRY_PASSWORD=${CONTAINER_REGISTRY_PASSWORD//\"/} && \
+                    CONTAINER_REGISTRY_ADDRESS=$(az acr show -n $(azureContainerRegistryName) --query loginServer) && \
+                    CONTAINER_REGISTRY_ADDRESS=${CONTAINER_REGISTRY_ADDRESS//\"/}
                 fi && \
-                echo "##vso[task.setvariable variable=ACR_USER]${ACR_USER}" && \
-                echo "##vso[task.setvariable variable=ACR_PASSWORD]${ACR_PASSWORD}" && \
-                echo "##vso[task.setvariable variable=ACR_ADDRESS]${ACR_ADDRESS}"
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_USERNAME]${CONTAINER_REGISTRY_USERNAME}" && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_PASSWORD]${CONTAINER_REGISTRY_PASSWORD}" && \
+                echo "##vso[task.setvariable variable=CONTAINER_REGISTRY_ADDRESS]${CONTAINER_REGISTRY_ADDRESS}"
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Build module images'
             inputs:
