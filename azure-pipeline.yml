@@ -52,17 +52,17 @@ stages:
               azureSubscription: '$(azureSubscription)'
               scriptLocation: inlineScript
               inlineScript: |
-              if [ -z "${ACR_USER}" ]; then
-                  ACR_USER=$(az acr credential show -n "${azureContainerRegistryName}" --query username) && \
-                  ACR_USER=${ACR_USER//\"/} && \
-                  ACR_PASSWORD=$(az acr credential show -n "${azureContainerRegistryName}" --query passwords[0].value) && \
-                  ACR_PASSWORD=${ACR_PASSWORD//\"/} && \
-                  ACR_ADDRESS=$(az acr show -n "${azureContainerRegistryName}" --query loginServer) && \
-                  ACR_ADDRESS=${ACR_ADDRESS//\"/}
-              fi && \
-              echo "##vso[task.setvariable variable=ACR_USER]${ACR_USER}" && \
-              echo "##vso[task.setvariable variable=ACR_PASSWORD]${ACR_PASSWORD}" && \
-              echo "##vso[task.setvariable variable=ACR_ADDRESS]${ACR_ADDRESS}"
+                if [ -z "${ACR_USER}" ]; then
+                    ACR_USER=$(az acr credential show -n "${azureContainerRegistryName}" --query username) && \
+                    ACR_USER=${ACR_USER//\"/} && \
+                    ACR_PASSWORD=$(az acr credential show -n "${azureContainerRegistryName}" --query passwords[0].value) && \
+                    ACR_PASSWORD=${ACR_PASSWORD//\"/} && \
+                    ACR_ADDRESS=$(az acr show -n "${azureContainerRegistryName}" --query loginServer) && \
+                    ACR_ADDRESS=${ACR_ADDRESS//\"/}
+                fi && \
+                echo "##vso[task.setvariable variable=ACR_USER]${ACR_USER}" && \
+                echo "##vso[task.setvariable variable=ACR_PASSWORD]${ACR_PASSWORD}" && \
+                echo "##vso[task.setvariable variable=ACR_ADDRESS]${ACR_ADDRESS}"
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Build module images'
             inputs:
