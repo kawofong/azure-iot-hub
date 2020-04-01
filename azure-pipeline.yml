@@ -68,7 +68,7 @@ stages:
             displayName: 'AzureIoTEdge - Build module images'
             inputs:
               action: 'Build module images'
-              templateFilePath: deployment.template.json
+              templateFilePath: IoTEdgeSolution/deployment.template.json
               defaultPlatform: amd64
           - task: AzureIoTEdge@2
             displayName: 'AzureIoTEdge - Push module images'
@@ -77,6 +77,6 @@ stages:
               azureSubscriptionEndpoint: '$(azureSubscription)'
               containerregistrytype: 'Azure Container Registry'
               azureContainerRegistry: '$(azureContainerRegistryName)'
-              templateFilePath: deployment.template.json
+              templateFilePath: IoTEdgeSolution/deployment.template.json
               defaultPlatform: amd64
               fillRegistryCredential: false
