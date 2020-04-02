@@ -7,6 +7,7 @@ variables:
   azureSubscription: 'AzureSubscriptionServiceConnection'
   azureContainerRegistryName: 'adhoc23acr' # TODO: replace with '{your-acr-name}'
   azureIotHubName: 'adhoc23-iothub' # TODO: replace with '{your-iothub-name}'
+  azureIotEdgeDeploymentName: '$(System.TeamProject)-deployment'
 
 stages:
   - stage: 'Test'
@@ -132,6 +133,14 @@ stages:
               deploymentFilePath: '$(Build.SourcesDirectory)/IoTEdgeSolution/deployment.json'
               azureSubscription: '$(azureSubscription)'
               iothubname: '$(azureIotHubName)'
-              deploymentid: '$(System.TeamProject)-deployment'
+              deploymentid: '$(azureIotEdgeDeploymentName)'
               deviceOption: 'Multiple Device'
               targetcondition: 'tags.environment = ''dev'''
+          - task: AzureCLI@2
+            displayName: 'Smoke Test'
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: bash
+              scriptLocation: scriptPath
+              scriptPath: '$(Build.SourcesDirectory)/edgeSmokeTest.sh'
+              arguments: '$(azureIotHubName) "dev" $(azureIotEdgeDeploymentName) -t "environment"'

@@ -40,10 +40,6 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
 ## Next steps
 
 - [] document steps to reproduce environment
-- [] Automate IoT module build and deployment in script
-- [] implement ci pipeline
-- [] document local dev flow
-- [] implement cd pipeline
 - [] implement environment promotion
 
 ## Gotchas
