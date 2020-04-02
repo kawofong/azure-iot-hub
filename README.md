@@ -1,6 +1,6 @@
-# Azure IoT Hub [WIP]
+# Azure IoT Hub
 
-This project demostrates the capabilities of Azure IoT Hub and how IoT devices and IoT edge integrate with IoT Hub.
+This project demostrates the capabilities of Azure IoT Hub and how IoT devices and IoT edge integrate with IoT Hub. Moreover, it highlights a CI/CD pipeline for IoT module from development to deployment.
 
 ## Prerequisite
 
@@ -18,7 +18,6 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
   - This will provision an [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/), [Azure Linux VM with IoT Edge runtime](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-install-iot-edge-ubuntuvm), and [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/)
 
 - Use VS code to open current directory
-  - Replace line 16 of `deployment.template.json` and `deployment.debug.template.json` from `"address": "docker"` to `"address": "{your-container-registry-address}"`
   - Create new file `IoTEdgeSolution/.env`. Copy below content to env file
 
   ```bash
@@ -28,6 +27,7 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
   BUILD_BUILDID=1
   ```
 
+  - Replace the value of `azureContainerRegistryName` and `azureIotHubName` (line 8 and 9) with your respective resource names
   - To link Azure account and Azure IoT Hub to VS code, follow steps in the section "[Set up VS Code and tools](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux#set-up-vs-code-and-tools)"
   - To build and push IoT modules, follow steps in the section "[Build and push your module](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#build-and-push-your-module)"
   - To deploy IoT modules to edge devices, follow steps in the section "[Deploy modules to device](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module#deploy-modules-to-device)"
@@ -50,6 +50,7 @@ This project demostrates the capabilities of Azure IoT Hub and how IoT devices a
 
 - [Tutorial: Develop IoT Edge modules for Linux devices](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-develop-for-linux)
 - [Tutorial: Develop and deploy a Node.js IoT Edge module for Linux devices](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-node-module)
+- [GitHub: Azure IoT Edge sample project for NodeJS](https://github.com/Azure-Samples/azure-iot-edge-devops-sample-node)
 
 ---
 
