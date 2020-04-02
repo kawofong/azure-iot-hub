@@ -134,4 +134,4 @@ stages:
               iothubname: '$(azureIotHubName)'
               deploymentid: '$(System.TeamProject)-deployment'
               deviceOption: 'Multiple Device'
-              targetcondition: 'capabilities.iotEdge = true'
+              targetcondition: 'tags.environment = ''dev'''

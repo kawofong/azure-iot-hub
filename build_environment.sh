@@ -162,6 +162,12 @@ else
     info "IoT edge device identity '${device_id}' exists in IoT Hub '${hub_name}'. Proceeding.."
 fi
 
+info "Updating device twin of device '${device_id}' to includes tags {'environment': 'dev'}"
+az iot hub device-twin update \
+--device-id ${device_id} \
+--hub-name ${hub_name} \
+--set tags='{"environment": "dev"}'
+
 info "Retrieving connection string for IoT Edge device '${device_id}'"
 device_connection_string=$(az iot hub device-identity show-connection-string \
 --hub-name "${hub_name}" \
